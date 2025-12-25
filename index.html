@@ -1,48 +1,78 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <!-- 关键：设置视口确保移动端适配 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>赛博圣诞树</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #000;
-            overflow: hidden;
-            font-family: 'Arial', sans-serif;
-            color: #0af;
-            touch-action: none; /* 允许自定义触摸交互 */
-        }
-        #canvasContainer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        #info {
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            text-align: center;
-            font-size: 14px;
-            text-shadow: 0 0 5px #0ff;
-            z-index: 100;
-        }
-    </style>
-</head>
-<body>
-    <div id="canvasContainer">
-        <canvas id="christmasTree"></canvas>
-    </div>
-    <div id="info">双指缩放 · 单指拖动 · 点击撒雪</div>
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+	&lt;head&gt;
+		&lt;meta charset="UTF-8"&gt;
+		&lt;title&gt;AE-圣诞树&lt;/title&gt;
+		&lt;style&gt;
+			html,
+			body {
+				margin: 0;
+				width: 100%;
+				height: 100%;
+			}
 
-    <script>
-        // 核心代码：粒子系统、动画渲染和交互处理
-        // 包括粒子类定义、圣诞树形状计算、触摸事件处理等
-        // 完整代码已部署到在线链接中
-    </script>
-</body>
-</html>
+			#main {
+				position: fixed;
+				top: 0;
+				left: 0;
+			}
 
+			#video1 {
+				width: 100%;
+				height: 100%;
+			}
+
+			.hidden {
+				display: none;
+			}
+		&lt;/style&gt;
+
+	&lt;/head&gt;
+
+	&lt;body id="app"&gt;
+			&lt;div id="main"&gt;
+			&lt;video id="video1" muted="muted" autoplay="autoplay" loop="loop" src="./video/lanse.mp4"&gt;
+			&lt;/video&gt;
+			&lt;audio id="music1" autostart="true" loop="loop" preload="auto" controls hidden="true"&gt;
+				&lt;source src="./music/音乐.mp3"&gt;&lt;/source&gt;
+			&lt;/audio&gt;
+
+		&lt;/div&gt;
+
+
+	&lt;/body&gt;
+	&lt;script type="text/javascript"&gt;
+		var video = document.getElementById("video1");
+		video.playbackRate *= 0.8;
+		video.play();
+		$(function() {
+			// var video = document.getElementById("video1");
+			// video.src = "";
+			// video.play();
+
+			// var music = document.getElementById("music1");
+			// music.src = "";
+			// music.play();
+		});
+	&lt;/script&gt;
+	&lt;script&gt;
+		var myAuto = document.getElementById('music1');
+		var app = document.getElementById("app");
+		// 监听事件
+		app.addEventListener("mousemove", function() {
+			console.log("played");
+			myAuto.play();
+		}, true);
+
+		// 用定时器触发事件
+		setInterval(function() {
+			if ("createEvent" in document) {
+				var evt = document.createEvent("HTMLEvents");
+				evt.initEvent("mousemove", false, true);
+				app.dispatchEvent(evt);
+			} else{
+				app.fireEvent("onmousemove");
+			}
+		}, 1000);
+	&lt;/script&gt;
+&lt;/html&gt;
