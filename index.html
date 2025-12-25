@@ -2,184 +2,290 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>赛博圣诞树</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简洁高级感圣诞树</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            background: #000;
-            overflow: hidden;
-            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
+            background: #0a1929;
+            color: #e3f2fd;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
         }
-        #christmas-tree {
-            width: 100vw;
-            height: 100vh;
-        }
-        .text {
-            position: absolute;
-            bottom: 30px;
-            color: #ffd700;
-            font-family: Arial, sans-serif;
-            font-size: 16px;
+        
+        .container {
             text-align: center;
-            width: 100%;
-            text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700;
+            padding: 20px;
+        }
+        
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #4fc3f7, #00e5ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(79, 195, 247, 0.3);
+        }
+        
+        .tree {
+            position: relative;
+            width: 300px;
+            height: 450px;
+            margin: 0 auto 40px;
+        }
+        
+        /* 树枝 */
+        .branch {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 120px solid;
+            bottom: 0;
+            left: 50px;
+            border-bottom-color: #1b5e20;
+        }
+        
+        .branch:nth-child(2) {
+            bottom: 100px;
+            border-left-width: 85px;
+            border-right-width: 85px;
+            border-bottom-width: 110px;
+            border-bottom-color: #2e7d32;
+        }
+        
+        .branch:nth-child(3) {
+            bottom: 190px;
+            border-left-width: 70px;
+            border-right-width: 70px;
+            border-bottom-width: 100px;
+            border-bottom-color: #388e3c;
+        }
+        
+        .branch:nth-child(4) {
+            bottom: 270px;
+            border-left-width: 55px;
+            border-right-width: 55px;
+            border-bottom-width: 90px;
+            border-bottom-color: #43a047;
+        }
+        
+        /* 树干 */
+        .trunk {
+            position: absolute;
+            width: 30px;
+            height: 70px;
+            background: linear-gradient(to right, #5d4037 0%, #8d6e63 100%);
+            bottom: 0;
+            left: 135px;
+            border-radius: 0 0 5px 5px;
+        }
+        
+        /* 星星 */
+        .star {
+            position: absolute;
+            top: 15px;
+            left: 135px;
+            color: #ffeb3b;
+            font-size: 40px;
+            text-shadow: 0 0 20px #ffeb3b;
+            animation: rotate 4s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 装饰球 */
+        .ornament {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px currentColor;
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            0% { opacity: 0.8; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
+        
+        /* 控制按钮 */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            color: #e3f2fd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        button:hover {
+            background: rgba(79, 195, 247, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(79, 195, 247, 0.2);
+        }
+        
+        .info {
+            margin-top: 20px;
+            color: #90caf9;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-    <canvas id="christmas-tree"></canvas>
-    <div class="text">Merry Christmas 🎄<br>你的赛博圣诞树已送达</div>
+    <div class="container">
+        <h1>高级感圣诞树</h1>
+        
+        <div class="tree" id="tree">
+            <div class="branch"></div>
+            <div class="branch"></div>
+            <div class="branch"></div>
+            <div class="branch"></div>
+            <div class="trunk"></div>
+            <div class="star">★</div>
+            <!-- 装饰球将通过JS动态添加 -->
+        </div>
+        
+        <div class="controls">
+            <button id="changeColor">更换颜色</button>
+            <button id="addOrnament">添加装饰</button>
+            <button id="toggleLights">切换灯光</button>
+        </div>
+        
+        <p class="info">点击按钮与圣诞树互动 | 简约高级设计</p >
+    </div>
 
     <script>
-        const canvas = document.getElementById('christmas-tree');
-        const ctx = canvas.getContext('2d');
-
-        // 适配屏幕尺寸
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        // 粒子类
-        class Particle {
-            constructor(x, y, color, size, vx, vy) {
-                this.x = x;
-                this.y = y;
-                this.color = color;
-                this.size = size;
-                this.vx = vx;
-                this.vy = vy;
-                this.alpha = 1;
-                this.decay = 0.008 + Math.random() * 0.012;
+        document.addEventListener('DOMContentLoaded', function() {
+            const tree = document.getElementById('tree');
+            const changeColorBtn = document.getElementById('changeColor');
+            const addOrnamentBtn = document.getElementById('addOrnament');
+            const toggleLightsBtn = document.getElementById('toggleLights');
+            const branches = document.querySelectorAll('.branch');
+            
+            let lightsOn = true;
+            let currentColorScheme = 0;
+            const colorSchemes = [
+                ['#1b5e20', '#2e7d32', '#388e3c', '#43a047'], // 绿色
+                ['#01579b', '#0277bd', '#0288d1', '#039be5'], // 蓝色
+                ['#4a148c', '#6a1b9a', '#7b1fa2', '#8e24aa'], // 紫色
+                ['#bf360c', '#d84315', '#e64a19', '#f4511e']  // 橙色
+            ];
+            
+            // 初始添加装饰球
+            addDecoration(60, 80, '#ff5252');
+            addDecoration(200, 120, '#448aff');
+            addDecoration(100, 180, '#ffeb3b');
+            addDecoration(160, 240, '#7c4dff');
+            addDecoration(80, 300, '#ff4081');
+            
+            // 添加装饰球函数
+            function addDecoration(left, bottom, color) {
+                const ornament = document.createElement('div');
+                ornament.className = 'ornament';
+                ornament.style.left = left + 'px';
+                ornament.style.bottom = bottom + 'px';
+                ornament.style.backgroundColor = color;
+                ornament.style.boxShadow = `0 0 15px ${color}`;
+                tree.appendChild(ornament);
+                
+                // 点击装饰球放大
+                ornament.addEventListener('click', function() {
+                    this.style.transform = 'scale(1.5)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1.1)';
+                    }, 300);
+                });
             }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.alpha -= this.decay;
-            }
-
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            }
-        }
-
-        let particles = [];
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height * 0.7;
-        const colors = ['#00ff00', '#ff0000', '#0000ff', '#ffff00', '#ff69b4', '#ffffff'];
-        const starColor = '#ffd700';
-
-        // 创建圣诞树主体
-        function createTree() {
-            // 树的层数
-            const layers = 8;
-            let layerWidth = canvas.width * 0.3;
-            const layerHeight = 30;
-
-            for (let i = 0; i < layers; i++) {
-                const y = centerY - i * layerHeight;
-                const startX = centerX - layerWidth / 2;
-
-                // 生成每层粒子
-                for (let j = 0; j < 60; j++) {
-                    const x = startX + Math.random() * layerWidth;
-                    const color = colors[Math.floor(Math.random() * colors.length)];
-                    const size = 1 + Math.random() * 2;
-                    const vx = (Math.random() - 0.5) * 0.3;
-                    const vy = (Math.random() - 0.5) * 0.3;
-                    particles.push(new Particle(x, y, color, size, vx, vy));
+            
+            // 更换颜色主题
+            changeColorBtn.addEventListener('click', function() {
+                currentColorScheme = (currentColorScheme + 1) % colorSchemes.length;
+                const colors = colorSchemes[currentColorScheme];
+                
+                branches.forEach((branch, index) => {
+                    branch.style.borderBottomColor = colors[index];
+                });
+                
+                // 更新按钮文本
+                const colorNames = ['绿色', '蓝色', '紫色', '橙色'];
+                changeColorBtn.textContent = `更换颜色 (${colorNames[currentColorScheme]})`;
+            });
+            
+            // 添加随机装饰球
+            addOrnamentBtn.addEventListener('click', function() {
+                const colors = ['#ff5252', '#448aff', '#ffeb3b', '#7c4dff', '#ff4081', '#69f0ae'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                const randomLeft = Math.floor(Math.random() * 250) + 25;
+                const randomBottom = Math.floor(Math.random() * 350) + 50;
+                
+                addDecoration(randomLeft, randomBottom, randomColor);
+            });
+            
+            // 切换灯光
+            toggleLightsBtn.addEventListener('click', function() {
+                lightsOn = !lightsOn;
+                const ornaments = document.querySelectorAll('.ornament');
+                
+                if (lightsOn) {
+                    ornaments.forEach(ornament => {
+                        ornament.style.animationPlayState = 'running';
+                        ornament.style.opacity = '1';
+                    });
+                    toggleLightsBtn.textContent = '关闭灯光';
+                } else {
+                    ornaments.forEach(ornament => {
+                        ornament.style.animationPlayState = 'paused';
+                        ornament.style.opacity = '0.5';
+                    });
+                    toggleLightsBtn.textContent = '开启灯光';
                 }
-
-                // 每层宽度递减
-                layerWidth *= 0.8;
-
-                // 随机添加装饰球
-                if (i % 2 === 0) {
-                    const ballX = centerX + (Math.random() - 0.5) * layerWidth * 1.2;
-                    const ballY = y - Math.random() * layerHeight;
-                    const ballColor = colors[Math.floor(Math.random() * colors.length)];
-                    particles.push(new Particle(ballX, ballY, ballColor, 4 + Math.random() * 3, 0, 0));
-                }
-            }
-
-            // 树顶星星
-            createStar(centerX, centerY - layers * layerHeight - 10);
-
-            // 树干
-            const trunkWidth = canvas.width * 0.05;
-            const trunkHeight = canvas.height * 0.1;
-            for (let k = 0; k < 30; k++) {
-                const x = centerX - trunkWidth / 2 + Math.random() * trunkWidth;
-                const y = centerY + Math.random() * trunkHeight;
-                particles.push(new Particle(x, y, '#8b4513', 2 + Math.random() * 1, 0, 0));
-            }
-        }
-
-        // 创建树顶星星
-        function createStar(x, y) {
+            });
+            
+            // 添加一些背景星星
             for (let i = 0; i < 30; i++) {
-                const angle = Math.random() * Math.PI * 2;
-                const distance = Math.random() * 15;
-                const sx = x + Math.cos(angle) * distance;
-                const sy = y + Math.sin(angle) * distance;
-                particles.push(new Particle(sx, sy, starColor, 1.5 + Math.random() * 1, 0, 0));
+                const star = document.createElement('div');
+                star.style.position = 'absolute';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.backgroundColor = '#ffffff';
+                star.style.borderRadius = '50%';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.opacity = Math.random() * 0.7 + 0.3;
+                document.body.appendChild(star);
+                
+                // 星星闪烁动画
+                star.animate([
+                    { opacity: star.style.opacity },
+                    { opacity: 0.2 },
+                    { opacity: star.style.opacity }
+                ], {
+                    duration: Math.random() * 2000 + 1000,
+                    iterations: Infinity
+                });
             }
-        }
-
-        // 生成雪花
-        function createSnow() {
-            const x = Math.random() * canvas.width;
-            const y = -10;
-            const size = 1 + Math.random() * 2;
-            const vx = (Math.random() - 0.5) * 0.5;
-            const vy = 1 + Math.random() * 1.5;
-            particles.push(new Particle(x, y, '#ffffff', size, vx, vy));
-        }
-
-        // 动画循环
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // 随机生成雪花
-            if (Math.random() < 0.1) {
-                createSnow();
-            }
-
-            // 更新并绘制粒子
-            for (let i = particles.length - 1; i >= 0; i--) {
-                const p = particles[i];
-                p.update();
-                p.draw();
-
-                // 移除透明粒子
-                if (p.alpha <= 0) {
-                    particles.splice(i, 1);
-                }
-            }
-
-            requestAnimationFrame(animate);
-        }
-
-        // 初始化
-        createTree();
-        animate();
+        });
     </script>
 </body>
 </html>
+
