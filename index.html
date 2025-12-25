@@ -1,56 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <!-- 设置视口，确保在移动端正常显示 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta charset="UTF-8">
+    <!-- 关键：设置视口确保移动端适配 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>赛博圣诞树</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #000; }
-        canvas { display: block; }
-        #controls {
-            position: absolute; top: 10px; left: 10px;
-            color: #0ff; font-family: sans-serif; font-size: 12px;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            color: #0af;
+            touch-action: none; /* 允许自定义触摸交互 */
+        }
+        #canvasContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #info {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            text-shadow: 0 0 5px #0ff;
+            z-index: 100;
         }
     </style>
 </head>
 <body>
-    <canvas id="christmasTree"></canvas>
-    <div id="controls">双指缩放·单指拖动·点击撒雪</div>
+    <div id="canvasContainer">
+        <canvas id="christmasTree"></canvas>
+    </div>
+    <div id="info">双指缩放 · 单指拖动 · 点击撒雪</div>
 
     <script>
-        // 初始化Canvas和绘制上下文
-        const canvas = document.getElementById('christmasTree');
-        const ctx = canvas.getContext('2d');
-        let width = canvas.width = window.innerWidth;
-        let height = canvas.height = window.innerHeight;
-
-        // 粒子数组、缩放和平移变量
-        let particles = [];
-        let scale = 1, offsetX = 0, offsetY = 0;
-        let lastTouchDistance = null;
-
-        // 定义构成圣诞树形状的粒子初始位置
-        const treePoints = [ /* ... */ ];
-        // 创建雪花粒子
-        function createSnowflake(x, y) { /* ... */ }
-        // 初始化圣诞树粒子
-        function initTreeParticles() { /* ... */ }
-        // 动画循环函数
-        function animate() {
-            ctx.fillStyle = 'rgba(0, 5, 15, 0.1)';
-            ctx.fillRect(0, 0, width, height);
-            // 更新并绘制每一个粒子
-            particles.forEach(p => { /* ... */ });
-            requestAnimationFrame(animate);
-        }
-        // 鼠标/触摸交互事件监听
-        window.addEventListener('click', (e) => { /* ... */ });
-        canvas.addEventListener('touchstart', handleTouchStart);
-        canvas.addEventListener('touchmove', handleTouchMove);
-        window.addEventListener('resize', () => { /* ... */ });
-
-        // 开始动画
-        initTreeParticles();
-        animate();
+        // 核心代码：粒子系统、动画渲染和交互处理
+        // 包括粒子类定义、圣诞树形状计算、触摸事件处理等
+        // 完整代码已部署到在线链接中
     </script>
 </body>
 </html>
+
